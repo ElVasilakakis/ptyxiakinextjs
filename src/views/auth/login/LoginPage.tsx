@@ -12,7 +12,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Form,
   FormField,
@@ -22,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import {signIn} from 'next-auth/react'
-import { useRouter, redirect } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 // Define a Zod schema for login
 const loginSchema = z.object({
@@ -59,7 +58,7 @@ export function LoginForm({
     }
     else
     {
-      router.push('/dashboard')
+      router.push('/app/dashboard')
     }
   }
 

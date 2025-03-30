@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+//enums
+enum DeviceStatus {
+  Online  @map("Online")
+  Offline @map("Offline")
+  Error   @map("Error")
+}
+
+// application
+
+model User {
+  id          String        @id @default(cuid())
+  username    String        @unique
+  email       String        @unique
+  password    String
+  enabled     Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  lands   Lands[]
+  Devices Devices[]
+}
+
+model Lands {
+  id        String   @id @default(cuid())
+  userId    String
+  landName  String
+  location  Json?
+  color     String?
+  enabled   Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User      @relation(fields: [userId], references: [id])
+  Devices Devices[]
+}
+
+model Devices {
+  id               String       @id @default(cuid())
+  userId           String
+  landId           String
+  name             String
+  deviceType       String?
+  deviceIdentifier String?
+  powerSource      String?
+  batteryLevel     Decimal?
+  batteryStatus    String?
+  connectionType   String?
+  signalStrength   Int?
+  ipAddress        String?
+  macAddress       String?
+  firmwareVersion  String?
+  lastSeen         String?
+  status           DeviceStatus @default(Offline)
+  enabled          Boolean  @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  user    User      @relation(fields: [userId], references: [id])
+  land    Lands     @relation(fields: [landId], references: [id])
+  Sensors Sensors[]
+}
+
+model Sensors {
+  id         String   @id @default(cuid())
+  deviceId   String
+  sensorType String
+  unit       String?
+  thresholds Json?
+  value      Decimal?
+  accuracy   Decimal?
+  readingAt  DateTime?
+  enabled    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  device Devices @relation(fields: [deviceId], references: [id])
+}

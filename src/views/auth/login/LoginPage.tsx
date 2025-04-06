@@ -59,7 +59,7 @@ export function LoginForm({
     }
     else
     {
-      router.push('/dashboard')
+      router.push('/app/dashboard')
     }
   }
 

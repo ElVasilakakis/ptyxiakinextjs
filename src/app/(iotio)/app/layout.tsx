@@ -17,6 +17,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { SiteHeader } from "@/components/site-header";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -41,33 +42,16 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar variant="inset" />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1 cursor-pointer" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <Breadcrumb>
-            <BreadcrumbList>
-              {breadcrumbs.map((crumb, index) => (
-                <React.Fragment key={index}>
-                  <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
-                    {index < breadcrumbs.length - 1 ? (
-                      <BreadcrumbLink href={crumb.href}>
-                        {crumb.label}
-                      </BreadcrumbLink>
-                    ) : (
-                      <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
-                    )}
-                  </BreadcrumbItem>
-                  {index < breadcrumbs.length - 1 && (
-                    <BreadcrumbSeparator className="hidden md:block" />
-                  )}
-                </React.Fragment>
-              ))}
-            </BreadcrumbList>
-          </Breadcrumb>
-        </header>
-        <div className="flex-1 gap-2 p-4">{children}</div>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col py-4 px-7 gap-4">
+              {children}
+            </div>
+          </div>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

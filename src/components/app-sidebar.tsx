@@ -1,156 +1,128 @@
+"use client"
+
 import * as React from "react"
-import { Cable, Cpu, GalleryVerticalEnd, MapPin, Minus, Plus, Thermometer } from "lucide-react"
+import {
+  ArrowUpCircleIcon,
+  BarChartIcon,
+  CameraIcon,
+  ClipboardListIcon,
+  Cpu,
+  DatabaseIcon,
+  FileCodeIcon,
+  FileIcon,
+  FileTextIcon,
+  FolderIcon,
+  HelpCircleIcon,
+  LayoutDashboardIcon,
+  ListIcon,
+  MapPinHouse,
+  SearchIcon,
+  SettingsIcon,
+  Thermometer,
+  UsersIcon,
+} from "lucide-react"
+
+
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  SidebarRail,
 } from "@/components/ui/sidebar"
-import { SearchForm } from "./search-form"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
+import { NavDocuments } from "./nav-documents"
+import { NavSecondary } from "./nav-secondary"
 
-
-const session = await getServerSession(authOptions);
-// This is sample data.
 const data = {
   navMain: [
     {
-      title: "Lands",
-      url: "#",
-      icon: MapPin,
-      items: [
-        {
-          title: "All",
-          url: "#",
-        },
-        {
-          title: "Create",
-          url: "#",
-        },
-      ],
+      title: "Dashboard",
+      url: "/app/dashboard",
+      icon: LayoutDashboardIcon,
     },
-  ],
-  projects: [
+    {
+      title: "Lands",
+      url: "/app/lands",
+      icon: MapPinHouse,
+    },
     {
       title: "Devices",
-      url: "#",
+      url: "/app/devices",
       icon: Cpu,
-      items: [
-        {
-          title: "All",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Create",
-          url: "#",
-        },
-        {
-          title: "Connect",
-          url: "#",
-        },
-      ],
     },
     {
       title: "Sensors",
-      url: "#",
+      url: "/app/sensors",
       icon: Thermometer,
-      items: [
-        {
-          title: "All",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Create",
-          url: "#",
-        },
-        {
-          title: "Connect",
-          url: "#",
-        },
-        {
-          title: "Metrics",
-          url: "#",
-        }
-      ],
     },
   ],
-};
 
+  navSecondary: [
+    {
+      title: "Settings",
+      url: "#",
+      icon: SettingsIcon,
+    },
+    {
+      title: "Get Help",
+      url: "#",
+      icon: HelpCircleIcon,
+    },
+    {
+      title: "Search",
+      url: "#",
+      icon: SearchIcon,
+    },
+  ],
+  documents: [
+    {
+      name: "Data Library",
+      url: "#",
+      icon: DatabaseIcon,
+    },
+    {
+      name: "Reports",
+      url: "#",
+      icon: ClipboardListIcon,
+    },
+    {
+      name: "Word Assistant",
+      url: "#",
+      icon: FileIcon,
+    },
+  ],
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:!p-1.5"
+            >
               <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Iot.io</span>
-                  <span className="">v1.0.0</span>
-                </div>
+                <ArrowUpCircleIcon className="h-5 w-5" />
+                <span className="text-base font-semibold">Iot.io</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <SearchForm />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarMenu>
-          {data.navMain.map((item, index) => (
-            <Collapsible key={item.title} defaultOpen={index === 1} className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton>
-                    {item.icon && <item.icon className="mr-2" />} {/* Render the icon */}
-                    {item.title}{" "}
-                    <Plus className="ml-auto group-data-[state=open]/collapsible:hidden" />
-                    <Minus className="ml-auto group-data-[state=closed]/collapsible:hidden" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                {item.items?.length ? (
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild isActive={subItem.isActive}>
-                            <a href={subItem.url}>{subItem.title}</a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                ) : null}
-              </SidebarMenuItem>
-            </Collapsible>
-          ))}
-          </SidebarMenu>
-        </SidebarGroup>
+        <NavMain items={data.navMain} />
+        <NavDocuments items={data.documents} />
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }

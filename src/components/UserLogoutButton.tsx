@@ -2,11 +2,11 @@
 import React from 'react';
 import { Button } from './ui/button';
 import { signOut } from 'next-auth/react';
+import { LogOutIcon } from 'lucide-react';
 
 export default function UserLogoutButton() {
   return (
-    <Button
-      variant="destructive"
+    <span
       className='cursor-pointer'
       onClick={() =>
         signOut({
@@ -15,7 +15,8 @@ export default function UserLogoutButton() {
         })
       }
     >
-      Sign Out
-    </Button>
+
+      Log Out Out
+    </span>
   );
 }

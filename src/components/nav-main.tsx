@@ -11,6 +11,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useRouter, usePathname } from "next/navigation"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function NavMain({
   items,
@@ -32,8 +40,20 @@ export function NavMain({
               tooltip="Quick Create"
               className="min-w-8 bg-blue-950 text-white duration-200 ease-linear hover:bg-blue-900 hover:text-white active:bg-blue-250 active:text-white cursor-pointer"
             >
-              <PlusCircleIcon />
-              <span>Quick Create</span>
+              <DropdownMenu>
+                <DropdownMenuTrigger onClick={(e) => e.stopPropagation()} className="flex flex-row gap-2 items-center w-full cursor-pointer">
+               
+                  <PlusCircleIcon size={18} />
+                  <span>Quick Add</span>
+                
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>Device</DropdownMenuItem>
+                  <DropdownMenuItem>Sensor</DropdownMenuItem>
+                  <DropdownMenuItem>Land</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
             </SidebarMenuButton>
             <Button
               size="icon"

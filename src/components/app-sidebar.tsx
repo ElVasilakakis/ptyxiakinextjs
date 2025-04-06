@@ -1,15 +1,13 @@
 import * as React from "react"
 import { Cable, Cpu, GalleryVerticalEnd, MapPin, Minus, Plus, Thermometer } from "lucide-react"
-
-import { SearchForm } from "@/components/search-form"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import { NavMain } from "@/components/nav-main"
+import { NavProjects } from "@/components/nav-projects"
+import { NavUser } from "@/components/nav-user"
+import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -20,7 +18,13 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { SearchForm } from "./search-form"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 
+
+const session = await getServerSession(authOptions);
 // This is sample data.
 const data = {
   navMain: [
@@ -39,6 +43,8 @@ const data = {
         },
       ],
     },
+  ],
+  projects: [
     {
       title: "Devices",
       url: "#",
@@ -67,6 +73,7 @@ const data = {
         {
           title: "All",
           url: "#",
+          isActive: true,
         },
         {
           title: "Create",
@@ -76,6 +83,10 @@ const data = {
           title: "Connect",
           url: "#",
         },
+        {
+          title: "Metrics",
+          url: "#",
+        }
       ],
     },
   ],
@@ -84,7 +95,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -136,6 +147,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

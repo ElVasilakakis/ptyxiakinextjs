@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import {PrismaAdapter} from "@next-auth/prisma-adapter";
 import { db } from "./db";
 import { compare } from "bcryptjs";
-import { NextResponse } from "next/server";
 
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(db),
@@ -22,7 +21,7 @@ export const authOptions: NextAuthOptions = {
             email: { label: "Email", type: "email", placeholder: "jsmith" },
             password: { label: "Password", type: "password" }
           },
-          async authorize(credentials, req) {
+          async authorize(credentials) {
             if(!credentials?.email || !credentials?.password)
             {
                 return null
@@ -58,7 +57,7 @@ export const authOptions: NextAuthOptions = {
             }
             return token
         },
-        async session({session,user,token}){
+        async session({session,token}){
             return {
                 ...session,
                 user: {

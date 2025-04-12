@@ -1,7 +1,7 @@
 for dev
 
-npm run dev
+npm install 
 
-for prisma studio
+npm run dev
 
 npx prisma studio 

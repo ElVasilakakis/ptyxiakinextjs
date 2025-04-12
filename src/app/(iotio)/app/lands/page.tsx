@@ -1,16 +1,17 @@
+
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Eye, Funnel, MapPin, MapPinHouse, Pencil, Trash } from 'lucide-react';
+import { Eye, Funnel, MapPinHouse, Pencil, PlusCircle, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SearchLands } from '@/components/lands/SearchLands';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import Link from 'next/link';
 
 export default async function Lands() {
     const session = await getServerSession(authOptions);
-  
     if (!session || !session.user) {
       return <div>Please log in to view your lands.</div>;
     }
@@ -32,11 +33,18 @@ export default async function Lands() {
               <Funnel />
             </Button>
             <SearchLands />
+
+            <Link href='lands/create'>
+              <Button className="cursor-pointer">
+                <PlusCircle />
+                Add Land
+              </Button>
+            </Link>
           </div>
         </div>
   
         {/* Lands List */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {lands.length > 0 ? (
             lands.map((land) => (
               <Card key={land.id} className="shadow-lg">
@@ -53,6 +61,10 @@ export default async function Lands() {
                 <CardContent>
                   <div className='flex'>
                     <p>Total Devices: <strong>{land.Devices?.length || '0'}</strong></p>
+                  </div>
+                  <div className='flex flex-col'>
+                    <p>Lattitude: <strong>{land?.location?.coordinates[0] || '0'}</strong></p>
+                    <p>Longitude: <strong>{land?.location?.coordinates[1] || '0'}</strong></p>
                   </div>
                 </CardContent>
 

@@ -15,8 +15,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -37,23 +35,24 @@ export function NavMain({
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
+              asChild
               tooltip="Quick Create"
-              className="min-w-8 bg-blue-950 text-white duration-200 ease-linear hover:bg-blue-900 hover:text-white active:bg-blue-250 active:text-white cursor-pointer"
             >
-              <DropdownMenu>
-                <DropdownMenuTrigger onClick={(e) => e.stopPropagation()} className="flex flex-row gap-2 items-center w-full cursor-pointer">
-               
-                  <PlusCircleIcon size={18} />
-                  <span>Quick Add</span>
-                
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>Device</DropdownMenuItem>
-                  <DropdownMenuItem>Sensor</DropdownMenuItem>
-                  <DropdownMenuItem>Land</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-
+              <div className="min-w-8 bg-blue-950 text-white duration-200 ease-linear hover:bg-blue-900 hover:text-white active:bg-blue-250 active:text-white cursor-pointer">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div onClick={(e) => e.stopPropagation()} className="flex flex-row gap-2 items-center w-full cursor-pointer">
+                      <PlusCircleIcon size={18} />
+                      <span>Quick Add</span>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Device</DropdownMenuItem>
+                    <DropdownMenuItem>Sensor</DropdownMenuItem>
+                    <DropdownMenuItem>Land</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </SidebarMenuButton>
             <Button
               size="icon"
@@ -69,13 +68,18 @@ export function NavMain({
           {items.map((item) => {
             const isActive = pathname === item.url
             return(
-              <SidebarMenuItem key={item.title}  >
+              <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton 
+                  asChild
                   tooltip={item.title}
-                  className={`cursor-pointer ${isActive ? "bg-zinc-950 text-white hover:bg-zinc-800 hover:text-white" : "text-gray-700 hover:bg-zinc-100"}`}
-                  onClick={() => router.push(item.url)}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+                >
+                  <div 
+                    className={`cursor-pointer w-full ${isActive ? "bg-zinc-950 text-white hover:bg-zinc-800 hover:text-white" : "text-gray-700 hover:bg-zinc-100"}`}
+                    onClick={() => router.push(item.url)}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </div>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             )
